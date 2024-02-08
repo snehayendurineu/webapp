@@ -9,12 +9,7 @@
 # npm install dotenv
 # npm install bcrypt
 
-# Add .env file with below fields :
-# DB_NAME=cloudDB
-# DB_USER=root
-# DB_PASSWORD=Lakki0811
-# DB_HOST = localhost
-# DB_DIALECT = mysql
+# Add .env file
 
 # execute node app.js
 
