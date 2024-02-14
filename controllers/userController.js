@@ -67,6 +67,13 @@ const getUser = async(request, res) => {
         return res.status(403).json({ error: 'You are not authorized' });
     }
     
+    const {...extraFields} = request.body;
+
+    if (Object.keys(extraFields).length > 0) {
+        return res.status(400).json({ error: 'No values should be given' });
+    }
+
+
     let user = await User.findOne({where:{username:username}})
 
     if(!user){
