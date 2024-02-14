@@ -37,9 +37,9 @@ jobs:
 
       - name: Run integration tests
         env:
-          MYSQL_HOST: localhost
-          MYSQL_USER: root
-          MYSQL_PASSWORD: Lakki0811
-          MYSQL_DATABASE: cloudDB
-          MYSQL_DIALECT: mysql
+         DB_NAME : cloudDB
+         DB_USER : root
+         DB_PASSWORD : Lakki0811
+         DB_HOST : localhost
+         DB_DIALECT : mysql
         run: npx jest
