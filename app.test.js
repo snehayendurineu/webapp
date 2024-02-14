@@ -5,7 +5,7 @@ const { sequelize } = require('./models/dbConnection');
 
 
 beforeAll(async () => {
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ force: false });
     console.log('Database schema synchronized successfully');
   });
   
@@ -16,17 +16,18 @@ afterAll(async () => {
 });
 
 describe('Integration tests', ()=>{
+    const createUsr = {
+        "username": "test@gmail.com",
+        "password": "test123",
+        "first_name": "test_fn",
+        "last_name": "test_ln"
+    }
     describe('Create account validation using GET call', ()=>{
         it('executing test case 1', async () => {
-            const createUsr = {
-                "username": "sy@gmail.com",
-                "password": "sindhu123",
-                "first_name": "sindhu",
-                "last_name": "yenduri"
-            }
+           
             await supertest(app).post("/v1/user").send(createUsr).expect(201);
 
-            const getres = await supertest(app).get("/v1/user/self").set('Authorization', `Basic ${Buffer.from('sy@gmail.com:sindhu123').toString('base64')}`).expect(200);
+            const getres = await supertest(app).get("/v1/user/self").set('Authorization', `Basic ${Buffer.from('test@gmail.com:test123').toString('base64')}`).expect(200);
 
             const getUsr = getres.body;
 
@@ -40,19 +41,24 @@ describe('Integration tests', ()=>{
     describe("Update account validation using GET call", ()=>{
         it('executing test case 2', async () => {
             const updateUsr = {
-                "password": "newsindhu123",
-                "first_name": "sindhu",
-                "last_name": "yenduri"
+                "password": "newtest123",
+                "first_name": "test_fn",
+                "last_name": "test_ln"
             }
 
-            await supertest(app).put(`/v1/user/self`).set('Authorization', `Basic ${Buffer.from('sy@gmail.com:sindhu123').toString('base64')}`).send(updateUsr).expect(200);
+            await supertest(app).put(`/v1/user/self`).set('Authorization', `Basic ${Buffer.from('test@gmail.com:test123').toString('base64')}`).send(updateUsr).expect(200);
 
-            const getres = await supertest(app).get("/v1/user/self").set('Authorization', `Basic ${Buffer.from('sy@gmail.com:newsindhu123').toString('base64')}`).expect(200);
+            const getres = await supertest(app).get("/v1/user/self").set('Authorization', `Basic ${Buffer.from('test@gmail.com:newtest123').toString('base64')}`).expect(200);
 
             const getUsr = getres.body;
 
             assert.strictEqual(getUsr.first_name, updateUsr.first_name);
             assert.strictEqual(getUsr.last_name, updateUsr.last_name);
+
+            await supertest(app).delete("/v1/user/self").set('Authorization', `Basic ${Buffer.from('test@gmail.com:newtest123').toString('base64')}`).expect(200);
+
+            
         })
+
     });
 });
