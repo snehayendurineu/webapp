@@ -141,9 +141,41 @@ const updateUser = async(request, res) => {
     res.status(200).json({ message: 'User information updated successfully' });
 }
 
+const deleteUser = async(request, res) => {
+    res.set('Cache-Control', 'no-cache');
+    const auth = request.headers.authorization;
+
+    if (!auth) {
+        return res.status(403).json({ error: 'You are not authorized' });
+    }
+
+    const encoded = auth.substring(6);
+    const decoded = Buffer.from(encoded, 'base64').toString('ascii');
+    const [username, password] = decoded.split(':');
+
+    if ((!username || username == "") && (!password || password == "")) {
+        return res.status(403).json({ error: 'You are not authorized' });
+    }
+
+    const user = await User.findOne({ where: { username: username } });
+
+    if (!user) {
+        return res.status(404).json({ error: 'User with this username does not exist' });
+    }
+
+    const pwdCheck = await bcrypt.compare(password, user.password);
+    if (!pwdCheck) {
+        return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    await User.destroy({ where: { id: user.id } });
+
+    res.status(200).json({ message: 'User deleted successfully' });
+}
 
 module.exports = {
     addUser,
     getUser,
-    updateUser
+    updateUser,
+    deleteUser
 }
