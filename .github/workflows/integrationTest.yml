@@ -1,25 +1,12 @@
+name: Integration Tests2
 
-
-name: Integration Tests
-
-on: 
+on:
   pull_request:
-      branches: [ "main" ]
+    branches: [ "main" ]
 
 jobs:
-  integration-tests:
+  integration-tests2:
     runs-on: ubuntu-latest
-
-    services:
-      mysql:
-        image: mysql:latest
-        env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          MYSQL_DATABASE: cloudDB
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
 
     steps:
       - name: Checkout code
@@ -30,14 +17,27 @@ jobs:
         with:
           node-version: '20.x'
 
+      - name: Print Secrets
+        run: |
+         echo "DB_USER: ${{ secrets.DB_USER }}"
+         echo "DB_PASSWORD: ${{ secrets.DB_PASSWORD }}"
+         echo "DATABASE: ${{ secrets.DATABASE }}"
+      - name: Start MySQL Service
+        run: |
+          sudo apt-get update
+          sudo systemctl start mysql.service
+          sudo mysql --user="${{ secrets.DB_USER }}" --password="${{ secrets.DB_USER }}" -e "CREATE DATABASE cloudDB;"
       - name: Install dependencies
         run: npm install
+
+      - name: Install Supertest
+        run: npm install supertest
 
       - name: Run integration tests
         env:
          DB_NAME : cloudDB
          DB_USER : root
-         DB_PASSWORD : ${{ secrets.DB_PASSWORD }}
-         DB_HOST : localhost
+         DB_PASSWORD : ${{ secrets.DB_USER }}
+         DB_HOST : 127.0.0.1
          DB_DIALECT : mysql
         run: npx jest
