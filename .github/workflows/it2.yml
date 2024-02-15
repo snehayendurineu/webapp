@@ -26,7 +26,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo systemctl start mysql.service
-          sudo mysql --user="${{ secrets.DB_USER }}" --password="${{ secrets.DB_USER }}" -e "CREATE DATABASE IF NOT EXISTS cloudDB ⁠;"
+          sudo mysql --user="${{ secrets.DB_USER }}" --password="${{ secrets.DB_USER }}" -e "CREATE DATABASE IF NOT EXISTS \⁠ ${{ secrets.DATABASE }}\ ⁠;"
       - name: Install dependencies
         run: npm install
 
@@ -35,7 +35,7 @@ jobs:
 
       - name: Run integration tests
         env:
-         DB_NAME : cloudDB
+         DB_NAME : ${{ secrets.DATABASE }}
          DB_USER : root
          DB_PASSWORD : ${{ secrets.DB_USER }}
          DB_HOST : 127.0.0.1
