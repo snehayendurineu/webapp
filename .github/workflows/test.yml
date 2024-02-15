@@ -17,16 +17,11 @@ jobs:
         with:
           node-version: '20.x'
 
-      - name: Print Secrets
-        run: |
-         echo "DB_USER: ${{ secrets.DB_USER }}"
-         echo "DB_PASSWORD: ${{ secrets.DB_PASSWORD }}"
-         echo "DATABASE: ${{ secrets.DATABASE }}"
       - name: Start MySQL Service
         run: |
           sudo apt-get update
           sudo systemctl start mysql.service
-          sudo mysql --user="${{ secrets.DB_USER }}" --password="${{ secrets.DB_USER }}" -e "CREATE DATABASE cloudDB;"
+          sudo mysql --user="${{ secrets.DB_USER }}" --password="${{ secrets.DB_USER }}" -e "CREATE DATABASE ${{ secrets.DATABASE }};"
       - name: Install dependencies
         run: npm install
 
@@ -35,7 +30,7 @@ jobs:
 
       - name: Run integration tests
         env:
-         DB_NAME : cloudDB
+         DB_NAME : ${{ secrets.DATABASE }}
          DB_USER : root
          DB_PASSWORD : ${{ secrets.DB_USER }}
          DB_HOST : 127.0.0.1
