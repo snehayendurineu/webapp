@@ -24,7 +24,8 @@ jobs:
         run: sudo service mysql start
 
       - name: Connect to DB
-        run: mysql -u root -p "${{ secrets.DB_PASSWORD }}"" -e "CREATE DATABASE IF NOT EXISTS cloudDB; USE cloudDB;"
+        run: mysql -u root -p"${{ secrets.DB_PASSWORD }}" -e "CREATE DATABASE IF NOT EXISTS cloudDB; USE cloudDB;"
+
 
       - name: Install dependencies
         run: npm install
