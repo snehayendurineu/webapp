@@ -17,6 +17,13 @@ jobs:
         with:
           node-version: '20.x'
 
+      - name: Print Secrets
+        run: |
+         echo "DB_USER: ${{ secrets.DB_USER }}"
+         echo "DB_PASSWORD: ${{ secrets.DB_PASSWORD }}"
+         echo "DATABASE: ${{ secrets.DATABASE }}"
+
+
       - name: Start MySQL Service
         run: |
           sudo apt-get update
