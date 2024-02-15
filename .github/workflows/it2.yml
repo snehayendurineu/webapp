@@ -18,13 +18,13 @@ jobs:
           node-version: '20.x'
 
       - name: Install MySQL
-        run: |
-          sudo apt-get update
-          sudo apt-get install mysql-server -y
-          sudo mysql_secure_installation
+        run: sudo yum install mysql-server
 
       - name: Start MySQL Service
-        run: sudo service mysql start
+        run: systemctl start mysqld
+
+      - name: Connect to DB
+        run: sudo mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'Lakki0811';"
 
       - name: Install dependencies
         run: npm install
