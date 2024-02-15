@@ -28,7 +28,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo systemctl start mysql.service
-          sudo mysql --user="${{ secrets.DB_USER }}" --password="${{ secrets.DB_PASSWORD }}" -e "CREATE DATABASE IF NOT EXISTS \⁠ ${{ secrets.DATABASE }}\ ⁠;"
+          sudo mysql --user="root" --password="Lakki0811" -e "CREATE DATABASE IF NOT EXISTS cloudDB ⁠;"
 
       - name: Install dependencies
         run: npm install
