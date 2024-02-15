@@ -18,13 +18,13 @@ jobs:
           node-version: '20.x'
 
       - name: Install MySQL
-        run: sudo yum install mysql-server
+        run: sudo apt-get update && sudo apt-get install mysql-client -y
 
       - name: Start MySQL Service
-        run: systemctl start mysqld
+        run: sudo service mysql start
 
       - name: Connect to DB
-        run: sudo mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'Lakki0811';"
+        run: mysql -h localhost -u root -p"${{ secrets.DB_PASSWORD }}" -e "CREATE DATABASE IF NOT EXISTS cloudDB; USE cloudDB;"
 
       - name: Install dependencies
         run: npm install
