@@ -25,7 +25,7 @@ describe('Integration tests', ()=>{
     describe('Create account validation using GET call', ()=>{
         it('executing test case 1', async () => {
            
-            await supertest(app).post("/v1/user").send(createUsr).expect(201);
+            await supertest(app).post("/v1/user").send(createUsr).expect(200);
 
             const getres = await supertest(app).get("/v1/user/self").set('Authorization', `Basic ${Buffer.from('test@gmail.com:test123').toString('base64')}`).expect(200);
 
@@ -46,7 +46,7 @@ describe('Integration tests', ()=>{
                 "last_name": "test_ln"
             }
 
-            await supertest(app).put(`/v1/user/self`).set('Authorization', `Basic ${Buffer.from('test@gmail.com:test123').toString('base64')}`).send(updateUsr).expect(200);
+            await supertest(app).put(`/v1/user/self`).set('Authorization', `Basic ${Buffer.from('test@gmail.com:test123').toString('base64')}`).send(updateUsr).expect(204);
 
             const getres = await supertest(app).get("/v1/user/self").set('Authorization', `Basic ${Buffer.from('test@gmail.com:newtest123').toString('base64')}`).expect(200);
 
