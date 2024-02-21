@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  integration-tests:
+  build-packer:
     runs-on: ubuntu-latest
 
     steps:
