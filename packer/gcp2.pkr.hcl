@@ -52,10 +52,11 @@ build {
   name    = "custom-image-builder"
   sources = ["source.googlecompute.custom-image"]
 
+/*
   provisioner "file" {
     source      = fileexists(".env")? ".env" : "/"
     destination = "/home/packer/.env"
-  }
+  }*/
 
   provisioner "file" {
     source      = "../webApp.zip"
