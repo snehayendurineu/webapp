@@ -2,6 +2,8 @@
 name: Integration Tests
 
 on:
+  push:
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -40,7 +42,9 @@ jobs:
 
       - name: Validate Packer
         run: |
+          zip -r webapp.zip ./
+          pwd ./webapp
           cd packer
           packer init .
           packer fmt .
-          packer validate .
+          packer validate -var 'pkr_service_account=${{secrets.PKR_SERVICE_ACCOUNT_KEY_DEV}}'
