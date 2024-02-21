@@ -47,4 +47,4 @@ jobs:
           cd packer
           packer init .
           packer fmt .
-          packer validate -var 'pkr_service_account=${{secrets.PKR_SERVICE_ACCOUNT_KEY_DEV}}' gcp2.pkr.hcl
+          packer validate -var 'pkr_service_account=${{secrets.PKR_SVC_ACCT_DEV}}' gcp2.pkr.hcl
