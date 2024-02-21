@@ -1,0 +1,20 @@
+name: Build Packer
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Packer
+        run: |
+          zip -r webApp.zip ./
+          pwd ./webApp
+          cd packer
+          packer build -var 'pkr_service_account=${{secrets.PKR_SERVICE_ACCOUNT_KEY_DEV}}'
