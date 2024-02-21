@@ -22,6 +22,7 @@ jobs:
           echo "HOST=${{ secrets.DB_HOST }}" >> .env
           echo "DIALECT=mysql" >> .env
           pwd
+          ls
 
       - name: Build Packer
         run: |
