@@ -61,6 +61,11 @@ build {
     script = "setup-script.sh"
   }
 
+  provisioner "file" {
+    source      = fileexists(".env")? ".env" : "/"
+    destination = "/home/packer/.env"
+  }
+
   provisioner "shell" {
     script = "mysql-script.sh"
   }
