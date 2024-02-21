@@ -53,7 +53,7 @@ build {
   sources = ["source.googlecompute.custom-image"]
 
   provisioner "file" {
-    source      = "../webapp.zip"
+    source      = "../webApp.zip"
     destination = "/home/packer/webapp.zip"
   }
 
