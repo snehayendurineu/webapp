@@ -37,3 +37,10 @@ jobs:
          DB_HOST : 127.0.0.1
          DB_DIALECT : mysql
         run: npx jest
+
+      - name: Validate Packer
+        run: |
+          cd packer
+          packer init .
+          packer fmt .
+          packer validate .
