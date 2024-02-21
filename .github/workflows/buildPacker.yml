@@ -19,3 +19,4 @@ jobs:
           ls
           cd packer
           packer build -var 'pkr_service_account=${{secrets.PKR_SERVICE_ACCOUNT_KEY_DEV}}'
+#cehck
