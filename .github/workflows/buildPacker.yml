@@ -21,6 +21,7 @@ jobs:
           packer init .
           packer fmt .
           packer validate gcp2.pkr.hcl
+          ls
           packer build gcp2.pkr.hcl
 
     #check
