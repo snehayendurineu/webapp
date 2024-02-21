@@ -53,17 +53,17 @@ build {
   sources = ["source.googlecompute.custom-image"]
 
   provisioner "file" {
+    source      = fileexists(".env")? ".env" : "/"
+    destination = "/home/packer/.env"
+  }
+
+  provisioner "file" {
     source      = "../webApp.zip"
     destination = "/home/packer/webApp.zip"
   }
 
   provisioner "shell" {
     script = "setup-script.sh"
-  }
-
-  provisioner "file" {
-    source      = fileexists(".env")? ".env" : "/"
-    destination = "/home/packer/.env"
   }
 
   provisioner "shell" {
