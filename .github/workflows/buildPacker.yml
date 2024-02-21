@@ -34,5 +34,5 @@ jobs:
           packer fmt .
           packer validate gcp2.pkr.hcl
           ls
-          packer build gcp2.pkr.hcl
+          packer build -var 'pkr_service_account=${{secrets.SRV_ACCT_DEV}}' gcp2.pkr.hcl
 #check
