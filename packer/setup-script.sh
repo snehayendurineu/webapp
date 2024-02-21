@@ -12,6 +12,7 @@ ls
 cd /home/packer || exit 1
 sudo yum install -y unzip
 sudo unzip webApp.zip
+ls
 cd webApp || exit 1
 
 echo "installing npm"
