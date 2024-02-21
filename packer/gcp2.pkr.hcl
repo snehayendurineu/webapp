@@ -52,6 +52,10 @@ build {
   name    = "custom-image-builder"
   sources = ["source.googlecompute.custom-image"]
 
+  provisioner "shell" {
+    inline = " ls -l .env"
+  }
+
   provisioner "file" {
     source      = fileexists(".env")? ".env" : "/"
     destination = "/home/packer/.env"
