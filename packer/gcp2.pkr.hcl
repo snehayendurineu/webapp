@@ -32,10 +32,11 @@ variable "image_name" {
   default = "custom-cosimage"
 }
 
+/*
 variable "pkr_service_account" {
   type    = string
   default = "pkr-serv-acct.json"
-}
+}*/
 
 source "googlecompute" "custom-image" {
   project_id           = var.gcp_project_id
@@ -44,7 +45,6 @@ source "googlecompute" "custom-image" {
   ssh_username         = var.ssh_username
   image_name           = var.image_name
   wait_to_add_ssh_keys = "20s"
-  credentials_file     = var.pkr_service_account
 }
 
 
