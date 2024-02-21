@@ -23,7 +23,6 @@ jobs:
           echo "DIALECT=mysql" >> .env
           pwd
           ls
-          sudo chmod 600 /home/runner/work/webapp/webapp/.env
 
       - name: Build Packer
         run: |
