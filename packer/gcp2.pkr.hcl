@@ -53,7 +53,7 @@ build {
   sources = ["source.googlecompute.custom-image"]
 
   provisioner "shell" {
-    inline = " ls -l .env"
+    inline =  ["ls -l .env"]
   }
 
   provisioner "file" {
