@@ -14,6 +14,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.SRV_ACCT_DEV }}'
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      - name: 'Use gcloud CLI'
+        run: 'gcloud info'
+
       - name: create .env file
         run: |         
           echo "DB_USER=${{ secrets.DB_USER}}" > .env
@@ -34,5 +45,5 @@ jobs:
           packer fmt .
           packer validate gcp2.pkr.hcl
           ls
-          packer build -var 'pkr_service_account=${{secrets.SRV_ACCT_DEV}}' gcp2.pkr.hcl
+          packer build gcp2.pkr.hcl
 #check
