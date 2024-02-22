@@ -52,12 +52,6 @@ build {
   name    = "custom-image-builder"
   sources = ["source.googlecompute.custom-image"]
 
-  provisioner "shell" {
-    inline = [
-      "gcloud compute firewall-rules create allow-http --allow tcp:8080 --source-ranges 0.0.0.0/0 --description 'Allow HTTP traffic'",
-    ]
-  }
-
   provisioner "file" {
     source      = "../webApp.zip"
     destination = "/home/packer/webApp.zip"
