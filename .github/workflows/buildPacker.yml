@@ -42,7 +42,7 @@ jobs:
           ls
           cd packer
           packer init .
-          packer fmt .
+          packer fmt -check .
           packer validate gcp2.pkr.hcl
           ls
           packer build gcp2.pkr.hcl
