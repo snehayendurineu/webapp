@@ -3,6 +3,8 @@ name: Build Packer
 on:
   push:
     branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build-packer:
@@ -43,5 +45,6 @@ jobs:
           packer fmt -check .
           packer validate gcp2.pkr.hcl
           ls
-          packer build gcp2.pkr.hcl
+          packer build  -var 'gcp_project_id={{secrets.GCP_PROJECT_ID}}' gcp2.pkr.hcl
+          
 #check
