@@ -43,7 +43,7 @@ source "googlecompute" "custom-image" {
   source_image_family  = var.source_image_family
   zone                 = var.zone
   ssh_username         = var.ssh_username
-  image_name    = "c-${replace(timestamp(), "/[^a-zA-Z0-9]*/", "")}-${var.image_name}"
+  image_name           = var.image_name
   wait_to_add_ssh_keys = "20s"
 }
 
