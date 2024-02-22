@@ -125,11 +125,6 @@ const updateUser = async(request, res) => {
         return res.status(400).json({ error: 'Only First Name, Last Name, and Password can be updated' });
     }
 
-    if(!first_name && !last_name && !password){
-        return res.status(204).end();
-    }
-
-
     const allowedFields = {};
     if (first_name) allowedFields.first_name = first_name;
     if (last_name) allowedFields.last_name = last_name;
@@ -138,7 +133,7 @@ const updateUser = async(request, res) => {
     allowedFields.account_updated = new Date();
 
     let user = await User.update(allowedFields, {where:{username:ausername}})
-    res.status(200).json({ message: 'User information updated successfully' });
+    res.status(204).json({ message: 'User information updated successfully' });
 }
 
 const deleteUser = async(request, res) => {
