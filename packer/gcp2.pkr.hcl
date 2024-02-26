@@ -49,7 +49,7 @@ source "googlecompute" "custom-image" {
 
 
 build {
-  name    = "custom-image-builder"
+     name    = "custom-image-builder"
   sources = ["source.googlecompute.custom-image"]
 
   provisioner "file" {
