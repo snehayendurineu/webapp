@@ -24,15 +24,14 @@ jobs:
       - name: 'Use gcloud CLI'
         run: 'gcloud info'
 
-      - name: create .env file
-        run: |         
-          echo "DB_USER=${{ secrets.DB_USER}}" > .env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-          echo "DB_NAME=${{ secrets.DATABASE }}" >> .env
-          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-          echo "DB_DIALECT=mysql" >> .env
-          pwd
-          ls
+    #  - name: create .env file
+     #     echo "DB_USER=${{ secrets.DB_USER}}" > .env
+      #    echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+       #   echo "DB_NAME=${{ secrets.DATABASE }}" >> .env
+        #  echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+         # echo "DB_DIALECT=mysql" >> .env
+          #pwd
+          #ls
 
       - name: Build Packer
         run: |
@@ -44,6 +43,6 @@ jobs:
           packer fmt .
           packer validate gcp2.pkr.hcl
           ls
-          packer build  -var 'gcp_project_id=${{secrets.GCP_PROJECT_ID}}' gcp2.pkr.hcl
+          packer build  -var 'gcp_project_id=${{secrets.GCP_PROJECT_ID}}' -var 'image_name=${{secrets.PKR_IMG_NAME}}' gcp2.pkr.hcl
           
 #check
