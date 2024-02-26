@@ -41,7 +41,7 @@ jobs:
           ls
           cd packer
           packer init .
-          packer fmt -check .
+          packer fmt .
           packer validate gcp2.pkr.hcl
           ls
           packer build  -var 'gcp_project_id=${{secrets.GCP_PROJECT_ID}}' gcp2.pkr.hcl
