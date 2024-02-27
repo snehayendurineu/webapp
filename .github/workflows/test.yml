@@ -46,5 +46,5 @@ jobs:
           pwd ./webApp
           cd packer
           packer init .
-          packer fmt .
+          packer fmt -check .
           packer validate gcp2.pkr.hcl
