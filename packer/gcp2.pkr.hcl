@@ -32,12 +32,6 @@ variable "image_name" {
   default = "custom-cosimage"
 }
 
-/*
-variable "pkr_service_account" {
-  type    = string
-  default = "pkr-serv-acct.json"
-}*/
-
 source "googlecompute" "custom-image" {
   project_id           = var.gcp_project_id
   source_image_family  = var.source_image_family
@@ -61,9 +55,10 @@ build {
     script = "setup-script.sh"
   }
 
+  /*
   provisioner "shell" {
     script = "mysql-script.sh"
-  }
+  }*/
 
   provisioner "shell" {
     script = "add-local-user.sh"
@@ -79,4 +74,4 @@ build {
   }
 
 }
- 
+
