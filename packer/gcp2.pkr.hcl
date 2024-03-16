@@ -73,5 +73,18 @@ build {
     script = "service-setting.sh"
   }
 
+  provisioner "shell" {
+    script = "ops-agent.sh"
+  }
+
+  provisioner "file" {
+    source      = "ops-agent-config.yml"
+    destination = "/etc/google-cloud-ops-agent/config.yml"
+  }
+
+   provisioner "shell" {
+    script = "restart-ops-agent.sh"
+  }
+
 }
 
