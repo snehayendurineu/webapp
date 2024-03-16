@@ -8,6 +8,7 @@
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.9.1",
     "sequelize": "^6.36.0",
-    "supertest": "^6.3.4"
+    "supertest": "^6.3.4",
+    "winston": "^3.12.0"
   }
 }
