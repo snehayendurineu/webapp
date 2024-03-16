@@ -82,7 +82,7 @@ build {
     destination = "/etc/google-cloud-ops-agent/config.yml"
   }
 
-   provisioner "shell" {
+  provisioner "shell" {
     script = "restart-ops-agent.sh"
   }
 
