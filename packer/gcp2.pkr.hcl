@@ -82,5 +82,8 @@ build {
     destination = "/tmp/webapp.service"
   }
 
+  provisioner "shell" {
+    script = "service-setting.sh"
+  }
 }
 
