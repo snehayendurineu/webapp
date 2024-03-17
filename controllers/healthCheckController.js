@@ -1,5 +1,6 @@
 const { error } = require('console');
 const dbConnection = require('../models/dbConnection');
+const logger = require('../loggerModel.js');
 
 async function checkHealth(request, response){
     logger.info('healtcheck Info');
