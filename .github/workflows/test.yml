@@ -43,6 +43,7 @@ jobs:
       - name: Validate Packer
         run: |
           sudo mkdir -p /var/log/webapp/
+          sudo chmod -R 755 /var/log/webapp/
           zip -r webApp.zip ./
           pwd ./webApp
           cd packer
