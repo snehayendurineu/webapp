@@ -64,9 +64,13 @@ build {
     script = "add-local-user.sh"
   }
 
+  provisioner "shell" {
+    script = "ops-agent.sh"
+  }
+
   provisioner "file" {
-    source      = "ops-agent-config.yml"
-    destination = "/tmp/config.yml"
+    source      = "ops-agent-config.yaml"
+    destination = "/tmp/config.yaml"
   }
 
   provisioner "shell" {
@@ -78,9 +82,5 @@ build {
     destination = "/tmp/webapp.service"
   }
 
-
-  provisioner "shell" {
-    script = "ops-agent.sh"
-  }
 }
 
