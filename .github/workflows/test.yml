@@ -31,6 +31,14 @@ jobs:
       - name: Install Supertest
         run: npm install supertest
 
+      - name: Create log directory
+        run: |
+          sudo mkdir -p /var/log/webapp/
+
+      - name: Set log directory permissions
+        run: |
+          sudo chmod -R 755 /var/log/webapp/
+
       - name: Run integration tests
         env:
          DB_NAME : ${{ secrets.DATABASE }}
@@ -39,14 +47,6 @@ jobs:
          DB_HOST : 127.0.0.1
          DB_DIALECT : mysql
         run: npx jest
-
-      - name: Create log directory
-        run: |
-          sudo mkdir -p /var/log/webapp/
-
-      - name: Set log directory permissions
-        run: |
-          sudo chmod -R 755 /var/log/webapp/
 
       - name: Validate Packer
         run: |
