@@ -65,19 +65,6 @@ build {
   }
 
   provisioner "file" {
-    source      = "webapp.service"
-    destination = "/tmp/webapp.service"
-  }
-
-  provisioner "shell" {
-    script = "service-setting.sh"
-  }
-
-  provisioner "shell" {
-    script = "ops-agent.sh"
-  }
-
-  provisioner "file" {
     source      = "ops-agent-config.yml"
     destination = "/tmp/config.yml"
   }
@@ -86,5 +73,14 @@ build {
     script = "restart-ops-agent.sh"
   }
 
+  provisioner "file" {
+    source      = "webapp.service"
+    destination = "/tmp/webapp.service"
+  }
+
+
+  provisioner "shell" {
+    script = "ops-agent.sh"
+  }
 }
 

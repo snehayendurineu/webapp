@@ -40,10 +40,16 @@ jobs:
          DB_DIALECT : mysql
         run: npx jest
 
-      - name: Validate Packer
+      - name: Create log directory
         run: |
           sudo mkdir -p /var/log/webapp/
+
+      - name: Set log directory permissions
+        run: |
           sudo chmod -R 755 /var/log/webapp/
+
+      - name: Validate Packer
+        run: |
           zip -r webApp.zip ./
           pwd ./webApp
           cd packer
