@@ -4,7 +4,6 @@ sudo curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo
 sudo bash add-google-cloud-ops-agent-repo.sh --also-install
 
 sudo mkdir -p /var/log/webapp/
-sudo su root
-#sudo chown -R snehayenduri /var/log/webapp/ || exit 1 
+sudo chown -R csye6225:csye6225 /var/log/webapp/
 sudo chmod -R 755 /var/log/webapp/
 sudo touch /var/log/webapp/app.log
