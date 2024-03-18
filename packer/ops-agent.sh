@@ -7,4 +7,4 @@ sudo mkdir -p /var/log/webapp/
 sudo su root
 #sudo chown -R snehayenduri /var/log/webapp/ || exit 1 
 sudo chmod -R 755 /var/log/webapp/
-#sudo touch /var/log/webapp/app.log
+sudo touch /var/log/webapp/app.log
