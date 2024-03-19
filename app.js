@@ -9,7 +9,7 @@ if (require.main === module) {
 
     app.listen(port, function(){
         console.log(`Server is running on port ${port}`);
-        logger.warn('Server is running on port 8080');
+        logger.info('Server is running on port 8080');
     });
 }
 
