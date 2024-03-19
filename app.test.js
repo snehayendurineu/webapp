@@ -2,16 +2,19 @@ const supertest = require('supertest');
 const assert = require('assert');
 const app = require('./app');
 const { sequelize } = require('./models/dbConnection');
+const logger = require('../loggerModel.js');
 
 
 beforeAll(async () => {
     await sequelize.sync({ force: false });
+    logger.info('Database schema synchronized successfully')
     console.log('Database schema synchronized successfully');
   });
   
 
 afterAll(async () => {
     await sequelize.close();
+    logger.info('Database connection closed');
     console.log('Database connection closed');
 });
 

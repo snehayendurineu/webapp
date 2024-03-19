@@ -2,24 +2,28 @@ require('dotenv').config();
 const db =  require('../models/dbConnection')
 const bcrypt = require('bcrypt');
 const User = db.users
+const logger = require('../loggerModel.js');
 
 const addUser = async (request, res) => {
     try{
-
+        logger.info('addUser api started');    
         const { username, first_name, last_name, password,...extraFields} = request.body;
 
         if (Object.keys(extraFields).length > 0) {
+            logger.warn('Only Username, First Name, Last Name, and Password can be given');
             return res.status(400).json({ error: 'Only Username, First Name, Last Name, and Password can be given' });
         }
 
 
         if(!username || !password || !first_name || !last_name){
+            logger.warn("Bad request, need username, password, first_name, last_name");
             return res.status(400).end();
         }
 
         res.set('Cache-Control', 'no-cache');
         const existingUser = await User.findOne({ where: { username:username} });
         if (existingUser) {
+            logger.warn("User with this username already exists");
             return res.status(400).json({ error: 'User with this username already exists' });
         }
 
@@ -40,22 +44,26 @@ const addUser = async (request, res) => {
             account_created: user.account_created,
             account_updated: user.account_updated
         };
-
-    
+ 
        res.status(201).send(userResponse)
+       logger.info('addUser api completed');   
     }catch(error){
         console.log(error)
+        logger.error('addUser api error');   
+        logger.error(error);
+        logger.info('addUser api completed');
         res.status(500).json({ error: 'Server Error' });
     }
 }
 
 const getUser = async(request, res) => {
-
+    logger.info('getuser api started');    
     res.set('Cache-Control', 'no-cache');
 
     const auth = request.headers.authorization;
 
     if(!auth){
+        logger.warn('You are not authorized');
         return res.status(403).json({ error: 'You are not authorized' });
     }
 
@@ -64,17 +72,20 @@ const getUser = async(request, res) => {
     const [username, password] = decoded.split(':')
 
     if((!username || username =="") &&  (!password || password=="")){
+        logger.warn('You are not authorized');
         return res.status(403).json({ error: 'You are not authorized' });
     }
     
     let user = await User.findOne({where:{username:username}})
 
     if(!user){
+        logger.warn('User with this username does not exists');
         return res.status(404).json({ error: 'User with this username does not exists' });
     }
 
     const pwdCheck =  await bcrypt.compare(password, user.password)
     if(!pwdCheck){
+        logger.warn('Invalid credentials');
         return res.status(401).json({ error: 'Invalid credentials' });
     }
     const userResponse = {
@@ -85,18 +96,19 @@ const getUser = async(request, res) => {
         account_created: user.account_created,
         account_updated: user.account_updated
     };
-
+    logger.info('getuser api completed');
     res.status(200).send(userResponse)
 }
 
 
 const updateUser = async(request, res) => {
-
+    logger.info('updateUser api started');
     res.set('Cache-Control', 'no-cache');
 
     const auth = request.headers.authorization;
 
     if(!auth){
+        logger.warn('You are not authorized');
         return res.status(403).json({ error: 'You are not authorized' });
     }
     
@@ -105,23 +117,27 @@ const updateUser = async(request, res) => {
     const [ausername, apassword] = decoded.split(':')
     
     if((!ausername || ausername =="") &&  (!password || password=="")){
+        logger.warn('You are not authorized');
         return res.status(403).json({ error: 'You are not authorized' });
     }
 
     let auser = await User.findOne({where:{username:ausername}})
 
     if(!auser){
+        logger.warn('User with this username does not exists');
         return res.status(404).json({ error: 'User with this username does not exists' });
     }
 
     const pwdCheck =  await bcrypt.compare(apassword, auser.password)
     if(!pwdCheck){
+        logger.warn('Invalid credentials');
         return res.status(401).json({ error: 'Invalid credentials' });
     }
 
     const { first_name, last_name, password,...extraFields} = request.body;
 
     if (Object.keys(extraFields).length > 0) {
+        logger.warn('Only First Name, Last Name, and Password can be updated')
         return res.status(400).json({ error: 'Only First Name, Last Name, and Password can be updated' });
     }
 
@@ -133,6 +149,7 @@ const updateUser = async(request, res) => {
     allowedFields.account_updated = new Date();
 
     let user = await User.update(allowedFields, {where:{username:ausername}})
+    logger.info('updateUser api completed');
     res.status(204).json({ message: 'User information updated successfully' });
 }
 

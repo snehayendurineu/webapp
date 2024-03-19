@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 require('dotenv').config();
+const logger = require('../loggerModel.js');
 
 const { DB_NAME, DB_USER, DB_PASSWORD,DB_HOST,DB_DIALECT} = process.env;
 
@@ -17,7 +18,8 @@ db.users = require('./userModel.js')(sequelize,DataTypes)
 
 db.sequelize.sync({force:false})
 .then(()=>{
-  console.log('yes re-sync done!')
+  console.log('resync completed')
+  logger.info('resync completed')
 })
 
 
