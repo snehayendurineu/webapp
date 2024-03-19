@@ -10,7 +10,7 @@ logging:
       type: parse_json
       time_key: time
       time_format: "%Y-%m-%dT%H:%M:%S.%L%Z"
-    move_severity:
+    severity-copy-processor:
       type: modify_fields
       fields:
         severity:
@@ -19,4 +19,4 @@ logging:
     pipelines:
       default_pipeline:
         receivers: [my-app-receiver]
-        processors: [my-app-processor, move_severity]
+        processors: [my-app-processor, severity-copy-processor]
