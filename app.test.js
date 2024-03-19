@@ -2,7 +2,7 @@ const supertest = require('supertest');
 const assert = require('assert');
 const app = require('./app');
 const { sequelize } = require('./models/dbConnection');
-const logger = require('../loggerModel.js');
+const logger = require('./loggerModel.js');
 
 
 beforeAll(async () => {
