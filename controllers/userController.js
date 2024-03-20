@@ -6,7 +6,7 @@ const logger = require('../loggerModel.js');
 
 const addUser = async (request, res) => {
     try{
-        logger.info('addUser api started');    
+        logger.debug('AddUser api started');    
         const { username, first_name, last_name, password,...extraFields} = request.body;
 
         if (Object.keys(extraFields).length > 0) {
@@ -44,20 +44,20 @@ const addUser = async (request, res) => {
             account_created: user.account_created,
             account_updated: user.account_updated
         };
- 
+       logger.info('Added user successfully')
        res.status(201).send(userResponse)
-       logger.info('addUser api completed');   
+       logger.debug('AddUser api completed');   
     }catch(error){
         console.log(error)
         logger.error('addUser api error');   
         logger.error(error);
-        logger.info('addUser api completed');
         res.status(500).json({ error: 'Server Error' });
+        logger.debug('AddUser api completed with error');
     }
 }
 
 const getUser = async(request, res) => {
-    logger.info('getuser api started');    
+    logger.debug('GetUser api started');    
     res.set('Cache-Control', 'no-cache');
 
     const auth = request.headers.authorization;
@@ -75,11 +75,15 @@ const getUser = async(request, res) => {
         logger.warn('You are not authorized');
         return res.status(403).json({ error: 'You are not authorized' });
     }
-    
+    if (request.headers['content-length'] !== undefined && request.headers['content-length'] !== '0') {
+        logger.warn('Invalid request header');
+        res.set('Cache-Control', 'no-cache');
+        return res.status(400).end();
+    }
     let user = await User.findOne({where:{username:username}})
 
     if(!user){
-        logger.warn('User with this username does not exists');
+        logger.warn('User with the username does not exists');
         return res.status(404).json({ error: 'User with this username does not exists' });
     }
 
@@ -96,13 +100,14 @@ const getUser = async(request, res) => {
         account_created: user.account_created,
         account_updated: user.account_updated
     };
-    logger.info('getuser api completed');
+    logger.info('User fetched successfully')
     res.status(200).send(userResponse)
+    logger.debug('GetUser api completed');
 }
 
 
 const updateUser = async(request, res) => {
-    logger.info('updateUser api started');
+    logger.debug('UpdateUser api started');
     res.set('Cache-Control', 'no-cache');
 
     const auth = request.headers.authorization;
@@ -149,8 +154,9 @@ const updateUser = async(request, res) => {
     allowedFields.account_updated = new Date();
 
     let user = await User.update(allowedFields, {where:{username:ausername}})
-    logger.info('updateUser api completed');
+    logger.info('User updated successfully');
     res.status(204).json({ message: 'User information updated successfully' });
+    logger.debug('UpdateUser api completed');
 }
 
 const deleteUser = async(request, res) => {
@@ -191,3 +197,4 @@ module.exports = {
     updateUser,
     deleteUser
 }
+
