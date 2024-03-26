@@ -158,7 +158,7 @@ const updateUser = async(request, res) => {
         return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    if(!user.is_verified){
+    if(!auser.is_verified){
         return res.status(403).json({ error: 'User is not verified.' });
     }
 
