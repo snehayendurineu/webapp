@@ -39,16 +39,19 @@ const addUser = async (request, res) => {
             last_name
         });
 
-        const topicName = 'verify_email';
-        const data = {
-            id: user.id,
-            username: user.username,
-            first_name: user.first_name,
-            last_name: user.last_name
-        };
-        const dataBuffer = Buffer.from(JSON.stringify(data));
+        if(process.env.ISTEST){
 
-        await pubSubClient.topic(topicName).publish(dataBuffer);
+            const topicName = 'verify_email';
+            const data = {
+                id: user.id,
+                username: user.username,
+                first_name: user.first_name,
+                last_name: user.last_name
+            };
+            const dataBuffer = Buffer.from(JSON.stringify(data));
+
+            await pubSubClient.topic(topicName).publish(dataBuffer);
+        }
 
         const userResponse = {
             id:user.id,
@@ -229,11 +232,7 @@ const verifyUser = async(request, res) => {
     const expiration_time = user.expiration_time;
     const current_time = new Date();
 
-    const milliSecondsDiff = current_time.getTime() - expiration_time.getTime();
-
-    const secondsDiff = milliSecondsDiff / 1000;
-
-    if(secondsDiff>120){
+    if(current_time>expiration_time){
         await User.destroy({ where: { id: user.id } });
         return res.status(410).json({ message : 'Verification link expired.'})
     }
