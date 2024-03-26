@@ -39,8 +39,12 @@ const addUser = async (request, res) => {
             last_name
         });
 
-        if(process.env.ISTEST){
-
+        if(process.env.ISTEST !== undefined && process.env.ISTEST){
+            logger.info("skipped pub/sub for integration testing");
+            console.log("skipped pub/sub for integration testing");
+        }else{
+            logger.info("calling pub/sub");
+            console.log("calling pub/sub");
             const topicName = 'verify_email';
             const data = {
                 id: user.id,
