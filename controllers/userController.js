@@ -3,6 +3,9 @@ const db =  require('../models/dbConnection')
 const bcrypt = require('bcrypt');
 const User = db.users
 const logger = require('../loggerModel.js');
+const { PubSub } = require('@google-cloud/pubsub');
+const projectId = 'cloud6225-dev';
+const pubSubClient = new PubSub({ projectId });
 
 const addUser = async (request, res) => {
     try{
@@ -35,6 +38,17 @@ const addUser = async (request, res) => {
             first_name,
             last_name
         });
+
+        const topicName = 'verify_email';
+        const data = {
+            id: user.id,
+            username: user.username,
+            first_name: user.first_name,
+            last_name: user.last_name
+        };
+        const dataBuffer = Buffer.from(JSON.stringify(data));
+
+        await pubSubClient.topic(topicName).publish(dataBuffer);
 
         const userResponse = {
             id:user.id,
@@ -92,6 +106,11 @@ const getUser = async(request, res) => {
         logger.warn('Invalid credentials');
         return res.status(401).json({ error: 'Invalid credentials' });
     }
+
+    if(!user.is_verified){
+        return res.status(403).json({ error: 'User is not verified.' });
+    }
+
     const userResponse = {
         id:user.id,
         first_name: user.first_name,
@@ -137,6 +156,10 @@ const updateUser = async(request, res) => {
     if(!pwdCheck){
         logger.warn('Invalid credentials');
         return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    if(!user.is_verified){
+        return res.status(403).json({ error: 'User is not verified.' });
     }
 
     const { first_name, last_name, password,...extraFields} = request.body;
@@ -191,10 +214,41 @@ const deleteUser = async(request, res) => {
     res.status(200).json({ message: 'User deleted successfully' });
 }
 
+const verifyUser = async(request, res) => {
+    verificationTokenParam = request.params.id;
+    //let user = await User.findOne({where:{verificationToken:verificationTokenParam}})
+    let user = await User.findOne({where:{id:verificationTokenParam}})
+    if(!user){
+        return res.status(404).json({ message : 'User verification failed.'});
+    }
+    
+    if(user.is_verified==true){
+        return res.status(409).json({ message: 'User is already verified.' });
+    }
+
+    //update expiration_time using cloud function and get it from user
+    const expiration_time = new Date(user.account_created.getTime() + (2 * 60 * 1000))
+    const current_time = new Date();
+
+    const milliSecondsDiff = current_time.getTime() - expiration_time.getTime();
+
+    const secondsDiff = milliSecondsDiff / 1000;
+
+    if(secondsDiff>120){
+        await User.destroy({ where: { id: user.id } });
+        return res.status(410).json({ message : 'Verification link expired.'})
+    }
+
+    await User.update({ is_verified: true }, { where: { id: user.id } });
+
+    return res.status(200).json({ message : 'You are verified successfully'});
+}
+
 module.exports = {
     addUser,
     getUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    verifyUser
 }
 

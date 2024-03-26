@@ -35,6 +35,19 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE,
             allowNull: true,
             defaultValue: DataTypes.NOW
+        },
+        expiration_time: {
+            type: DataTypes.DATE,
+            allowNull: true
+        },
+        is_verified: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
+        },
+        verificationToken: {
+            type: DataTypes.UUID,
+            allowNull: true
         }
     })
     return User
