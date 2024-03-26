@@ -216,8 +216,8 @@ const deleteUser = async(request, res) => {
 
 const verifyUser = async(request, res) => {
     verificationTokenParam = request.params.id;
-    //let user = await User.findOne({where:{verificationToken:verificationTokenParam}})
-    let user = await User.findOne({where:{id:verificationTokenParam}})
+    let user = await User.findOne({where:{verificationToken:verificationTokenParam}})
+
     if(!user){
         return res.status(404).json({ message : 'User verification failed.'});
     }
@@ -226,8 +226,7 @@ const verifyUser = async(request, res) => {
         return res.status(409).json({ message: 'User is already verified.' });
     }
 
-    //update expiration_time using cloud function and get it from user
-    const expiration_time = new Date(user.account_created.getTime() + (2 * 60 * 1000))
+    const expiration_time = user.expiration_time;
     const current_time = new Date();
 
     const milliSecondsDiff = current_time.getTime() - expiration_time.getTime();
