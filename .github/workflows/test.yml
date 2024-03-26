@@ -19,17 +19,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '20.x'
-          
-      - id: 'auth'
-        uses: 'google-github-actions/auth@v2'
-        with:
-          credentials_json: '${{ secrets.SRV_ACCT_DEV }}'
 
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v2'
-
-      - name: 'Use gcloud CLI'
-        run: 'gcloud info'
+      - name: create env file
+        run: |         
+          echo "ISTEST=true" > .env
 
       - name: Start MySQL Service
         run: |
