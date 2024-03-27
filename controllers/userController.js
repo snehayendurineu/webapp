@@ -238,7 +238,7 @@ const verifyUser = async(request, res) => {
 
     if(current_time>expiration_time){
         await User.destroy({ where: { id: user.id } });
-        return res.status(410).json({ message : 'Verification link expired.'})
+        return res.status(410).json({ message : 'Verification link expired. Please create your account again.'})
     }
 
     await User.update({ is_verified: true }, { where: { id: user.id } });
