@@ -54,7 +54,6 @@ jobs:
             --service-account=logging-srv-acct@cloud6225-dev.iam.gserviceaccount.com \
             --scopes=https://www.googleapis.com/auth/cloud-platform \
             --maintenance-policy=MIGRATE \
-            --preemptible=false \
             --no-restart-on-failure
 
 
