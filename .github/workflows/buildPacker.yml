@@ -62,9 +62,9 @@ jobs:
       - name: Using above instance template in the instance group
         run: |
           gcloud compute instance-groups managed rolling-action start-update webapp-instance-group-manager \
-            --version=template=webapp-instance-template-new \
+            --version=template=https://www.googleapis.com/compute/v1/projects/cloud6225-dev/regions/us-east1/instanceTemplates/webapp-instance-template-new \
             --region=us-east1 \
-            
+
     
       - name: Wait Until Update is Complete
         run: |
