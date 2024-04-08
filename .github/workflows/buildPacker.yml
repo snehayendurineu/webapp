@@ -63,8 +63,11 @@ jobs:
         run: |
           gcloud compute instance-groups managed rolling-action start-update webapp-instance-group-manager \
             --version=template=webapp-instance-template-new \
-            --project=cloud6225-dev \
-            --region=us-east1 
+            --region=us-east1 \
+            --type='opportunistic' \
+            --max-surge=0 \
+            --max-unavailable=3 \
+            --min-ready=0 
     
       - name: Wait Until Update is Complete
         run: |
