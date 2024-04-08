@@ -57,6 +57,12 @@ jobs:
             --maintenance-policy=MIGRATE \
             --no-restart-on-failure
 
+
+      - name: Using above instance template in the instance group
+        run: |
+          gcloud compute instance-groups managed rolling-action start-update webapp-instance-group-manager \
+            --version=template=webapp-instance-template-new \
+            --region=us-east1
     
 
 
