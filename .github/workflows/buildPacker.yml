@@ -40,6 +40,7 @@ jobs:
       - name: Create new Instance Template version
         run: |
            gcloud compute instance-templates create webapp-instance-template-new \
+            --instance-template-region=us-east1
             --description="new template version" \
             --region=https://www.googleapis.com/compute/beta/projects/cloud6225-dev/regions/us-east1 \
             --machine-type=e2-standard-2 \
@@ -62,7 +63,6 @@ jobs:
         run: |
           gcloud compute instance-groups managed rolling-action start-update webapp-instance-group-manager \
             --version=template=webapp-instance-template-new \
-            --service-account=logging-srv-acct@cloud6225-dev.iam.gserviceaccount.com \
             --project=cloud6225-dev \
             --region=https://www.googleapis.com/compute/beta/projects/cloud6225-dev/regions/us-east1 
     
