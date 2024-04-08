@@ -50,7 +50,7 @@ jobs:
             --boot-disk-type=pd-standard \
             --boot-disk-size=100GB \
             --image-project=cloud6225-dev \
-            --image=/${{secrets.PKR_IMG_NAME}} \
+            --image=${{secrets.PKR_IMG_NAME}} \
             --metadata=startup-script="#!/bin/bash\necho \"DB_USER=${{secrets.DB_USER_CLOUDSQL}}\" > /home/packer/.env\necho \"DB_PASSWORD=${{secrets.DB_PWD_CLOUDSQL}}\" >> /home/packer/.env\necho \"DB_NAME=${{secrets.DB_NAME_CLOUDSQL}}\" >> /home/packer/.env\necho \"DB_HOST=${{secrets.DB_HOST_CLOUDSQL}}\" >> /home/packer/.env\necho \"DB_DIALECT=mysql\" >> /home/packer/.env" \
             --service-account=logging-srv-acct@cloud6225-dev.iam.gserviceaccount.com \
             --scopes=https://www.googleapis.com/auth/cloud-platform \
