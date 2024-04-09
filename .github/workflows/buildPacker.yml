@@ -61,7 +61,7 @@ jobs:
                 echo 'DB_PASSWORD=${{secrets.DB_PWD_CLOUDSQL}}' >> /home/packer/.env
                 echo 'DB_NAME=${{secrets.DB_USER_CLOUDSQL}}' >> /home/packer/.env
                 echo 'DB_HOST=${{secrets.DB_HOST_CLOUDSQL}}' >> /home/packer/.env
-                echo 'DB_DIALECT=mysql' >> /home/packer/.env"
+                echo 'DB_DIALECT=mysql' >> /home/packer/.env" \
             --service-account=logging-srv-acct@cloud6225-dev.iam.gserviceaccount.com \
             --scopes=https://www.googleapis.com/auth/cloud-platform \
             --maintenance-policy=MIGRATE \
