@@ -66,7 +66,7 @@ jobs:
             --scopes=https://www.googleapis.com/auth/cloud-platform \
             --maintenance-policy=MIGRATE \
             --restart-on-failure \
-            --boot-disk-kms-key=projects/cloud6225-dev/locations/us-east1/keyRings/webapp-key-ring-5/cryptoKeys/webapp-key-vm
+          #ß  --boot-disk-kms-key=projects/cloud6225-dev/locations/us-east1/keyRings/${{secrets.KEYRING}}/cryptoKeys/webapp-key-vm
 
       - name: Using above instance template in the instance group
         run: |
