@@ -54,7 +54,7 @@ jobs:
             --image=${{secrets.PKR_IMG_NAME}} \
             --metadata=startup-script="#!/bin/bash
                 echo 'Password: ${{secrets.DB_PWD_CLOUDSQL}}' > /home/packer/sample.txt
-                echo ${{secrets.DB_HOST_CLOUDSQL} >> /home/packer/sample.txt
+                echo ${{secrets.DB_HOST_CLOUDSQL}} >> /home/packer/sample.txt
                 echo ${{secrets.DB_USER_CLOUDSQL}} >> /home/packer/sample.txt
                 echo 'test' >> /home/packer/sample.txt
                 echo 'DB_USER=${{secrets.DB_USER_CLOUDSQL}}' > /home/packer/.env
