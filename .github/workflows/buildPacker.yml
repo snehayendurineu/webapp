@@ -66,7 +66,8 @@ jobs:
             --scopes=https://www.googleapis.com/auth/cloud-platform \
             --maintenance-policy=MIGRATE \
             --restart-on-failure \
-            --disk-encryption-key=kms_key_self_link=projects/cloud6225-dev/locations/us-east1/keyRings/webapp-key-ring-5/cryptoKeys/webapp-key-vm
+            --disk-encryption-key="kms_key_self_link=https://www.googleapis.com/compute/v1/projects/cloud6225-dev/locations/us-east1/keyRings/webapp-key-ring-5/cryptoKeys/webapp-key-vm"
+
       - name: Using above instance template in the instance group
         run: |
           gcloud compute instance-groups managed rolling-action start-update webapp-instance-group-manager \
