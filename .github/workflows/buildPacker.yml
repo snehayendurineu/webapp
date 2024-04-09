@@ -56,7 +56,8 @@ jobs:
             --service-account=logging-srv-acct@cloud6225-dev.iam.gserviceaccount.com \
             --scopes=https://www.googleapis.com/auth/cloud-platform \
             --maintenance-policy=MIGRATE \
-            --no-restart-on-failure
+            --restart-on-failure
+            --no-address
 
 
       - name: Using above instance template in the instance group
@@ -64,7 +65,8 @@ jobs:
           gcloud compute instance-groups managed rolling-action start-update webapp-instance-group-manager \
             --version=template=https://www.googleapis.com/compute/v1/projects/cloud6225-dev/regions/us-east1/instanceTemplates/webapp-instance-template-new \
             --region=us-east1 \
-
+            --max-surge=1 \
+            --max-unavailable=1
     
       - name: Wait Until Update is Complete
         run: |
