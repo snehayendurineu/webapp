@@ -42,13 +42,13 @@ jobs:
             --description="new template version" \
             --region=us-east1 \
             --machine-type=e2-standard-2 \
-            --network=https://www.googleapis.com/compute/beta/projects/cloud6225-dev/global/networks/vpc-main-network \
-            --subnet=https://www.googleapis.com/compute/beta/projects/cloud6225-dev/regions/us-east1/subnetworks/webapp \
+            --network=https://www.googleapis.com/compute/beta/projects/${{secrets.GCP_PROJECT_ID}}/global/networks/vpc-main-network \
+            --subnet=https://www.googleapis.com/compute/beta/projects/${{secrets.GCP_PROJECT_ID}}/regions/${{secrets.GCP_REGION}}/subnetworks/webapp \
             --tags=http-server \
             --boot-disk-auto-delete \
             --boot-disk-type=pd-standard \
             --boot-disk-size=100GB \
-            --image-project=cloud6225-dev \
+            --image-project=${{secrets.GCP_PROJECT_ID}} \
             --image=${{secrets.PKR_IMG_NAME}} \
             --metadata=startup-script="#!/bin/bash
                 echo 'Password: ${{secrets.DB_PWD_CLOUDSQL}}' > /home/packer/sample.txt
@@ -60,16 +60,16 @@ jobs:
                 echo 'DB_NAME=${{secrets.DB_USER_CLOUDSQL}}' >> /home/packer/.env
                 echo 'DB_HOST=${{secrets.DB_HOST_CLOUDSQL}}' >> /home/packer/.env
                 echo 'DB_DIALECT=mysql' >> /home/packer/.env" \
-            --service-account=logging-srv-acct@cloud6225-dev.iam.gserviceaccount.com \
+            --service-account={{secrets.LOGGER_SERVICE_ACCOUNT_KEY_DEV}} \
             --scopes=https://www.googleapis.com/auth/cloud-platform \
             --maintenance-policy=MIGRATE \
             --restart-on-failure \
-            --boot-disk-kms-key=projects/cloud6225-dev/locations/us-east1/keyRings/${{secrets.KEYRING}}/cryptoKeys/webapp-key-vm
+            --boot-disk-kms-key=projects/${{secrets.GCP_PROJECT_ID}}/locations/${{secrets.GCP_REGION}}/keyRings/${{secrets.KEYRING}}/cryptoKeys/webapp-key-vm
 
       - name: Using above instance template in the instance group
         run: |
           gcloud compute instance-groups managed rolling-action start-update webapp-instance-group-manager \
-            --version=template=https://www.googleapis.com/compute/v1/projects/cloud6225-dev/regions/us-east1/instanceTemplates/webapp-instance-template-new \
+            --version=template=https://www.googleapis.com/compute/v1/projects/${{secrets.GCP_PROJECT_ID}}/regions/${{secrets.GCP_REGION}}/instanceTemplates/webapp-instance-template-new \
             --region=us-east1 \
             --max-surge=3 \
             --max-unavailable=3
