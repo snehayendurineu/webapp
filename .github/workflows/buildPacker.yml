@@ -1,8 +1,6 @@
 name: Build Packer
 
 on:
-  pull_request:
-    branches: ["main"]
   push:
     branches: [ "main" ]
     
@@ -35,7 +33,7 @@ jobs:
           packer init .
           packer validate gcp2.pkr.hcl
           ls
-         # packer build  -var 'gcp_project_id=${{secrets.GCP_PROJECT_ID}}' -var 'image_name=${{secrets.PKR_IMG_NAME}}' gcp2.pkr.hcl
+          packer build  -var 'gcp_project_id=${{secrets.GCP_PROJECT_ID}}' -var 'image_name=${{secrets.PKR_IMG_NAME}}' gcp2.pkr.hcl
 
       - name: Create new Instance Template version
         run: |
