@@ -68,7 +68,7 @@ jobs:
 
       - name: Using above instance template in the instance group
         run: |
-          gcloud compute instance-groups managed rolling-action start-update webapp-instance-group-manager \
+          gcloud compute instance-groups managed rolling-action start-update ${{secrets.MIG_CLOUD}} \
             --version=template=https://www.googleapis.com/compute/v1/projects/${{secrets.GCP_PROJECT_ID}}/regions/${{secrets.GCP_REGION}}/instanceTemplates/webapp-instance-template-new \
             --region=${{secrets.GCP_REGION}} \
             --max-surge=3 \
