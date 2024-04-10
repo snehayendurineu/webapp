@@ -38,9 +38,9 @@ jobs:
       - name: Create new Instance Template version
         run: |
            gcloud compute instance-templates create webapp-instance-template-new \
-            --instance-template-region=us-east1 \
+            --instance-template-region=${{secrets.GCP_REGION}} \
             --description="new template version" \
-            --region=us-east1 \
+            --region=${{secrets.GCP_REGION}} \
             --machine-type=e2-standard-2 \
             --network=https://www.googleapis.com/compute/beta/projects/${{secrets.GCP_PROJECT_ID}}/global/networks/vpc-main-network \
             --subnet=https://www.googleapis.com/compute/beta/projects/${{secrets.GCP_PROJECT_ID}}/regions/${{secrets.GCP_REGION}}/subnetworks/webapp \
@@ -64,20 +64,20 @@ jobs:
             --scopes=https://www.googleapis.com/auth/cloud-platform \
             --maintenance-policy=MIGRATE \
             --restart-on-failure \
-            --boot-disk-kms-key=projects/${{secrets.GCP_PROJECT_ID}}/locations/${{secrets.GCP_REGION}}/keyRings/${{secrets.KEYRING}}/cryptoKeys/webapp-key-vm
+            --boot-disk-kms-key=projects/${{secrets.GCP_PROJECT_ID}}/locations/${{secrets.GCP_REGION}}/keyRings/${{secrets.KEYRING}}/cryptoKeys/${{secrets.VM_CMS_KEY}}
 
       - name: Using above instance template in the instance group
         run: |
           gcloud compute instance-groups managed rolling-action start-update webapp-instance-group-manager \
             --version=template=https://www.googleapis.com/compute/v1/projects/${{secrets.GCP_PROJECT_ID}}/regions/${{secrets.GCP_REGION}}/instanceTemplates/webapp-instance-template-new \
-            --region=us-east1 \
+            --region=${{secrets.GCP_REGION}} \
             --max-surge=3 \
             --max-unavailable=3
     
       - name: Wait Until Update is Complete
         run: |
-          gcloud compute instance-groups managed wait-until webapp-instance-group-manager \
+          gcloud compute instance-groups managed wait-until ${{secrets.MIG_CLOUD}} \
             --version-target-reached \
-            --region=us-east1 
+            --region=${{secrets.GCP_REGION}} 
 
           
