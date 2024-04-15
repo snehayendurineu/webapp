@@ -29,11 +29,11 @@ describe('Integration tests', ()=>{
     describe('Create account validation using GET call', ()=>{
         it('executing test case 1', async () => {
            
-            await supertest(app).post("/v1/user").send(createUsr).expect(201);
+            await supertest(app).post("/v11/user").send(createUsr).expect(201);
 
             await User.update({ is_verified: true }, { where: { username: "test@gmail.com"} });
 
-            const getres = await supertest(app).get("/v1/user/self").set('Authorization', `Basic ${Buffer.from('test@gmail.com:test123').toString('base64')}`).expect(200);
+            const getres = await supertest(app).get("/v11/user/self").set('Authorization', `Basic ${Buffer.from('test@gmail.com:test123').toString('base64')}`).expect(200);
 
             const getUsr = getres.body;
 
@@ -52,16 +52,16 @@ describe('Integration tests', ()=>{
                 "last_name": "test_ln"
             }
 
-            await supertest(app).put(`/v1/user/self`).set('Authorization', `Basic ${Buffer.from('test@gmail.com:test123').toString('base64')}`).send(updateUsr).expect(204);
+            await supertest(app).put(`/v11/user/self`).set('Authorization', `Basic ${Buffer.from('test@gmail.com:test123').toString('base64')}`).send(updateUsr).expect(204);
 
-            const getres = await supertest(app).get("/v1/user/self").set('Authorization', `Basic ${Buffer.from('test@gmail.com:newtest123').toString('base64')}`).expect(200);
+            const getres = await supertest(app).get("/v11/user/self").set('Authorization', `Basic ${Buffer.from('test@gmail.com:newtest123').toString('base64')}`).expect(200);
 
             const getUsr = getres.body;
 
             assert.strictEqual(getUsr.first_name, updateUsr.first_name);
             assert.strictEqual(getUsr.last_name, updateUsr.last_name);
 
-            await supertest(app).delete("/v1/user/self").set('Authorization', `Basic ${Buffer.from('test@gmail.com:newtest123').toString('base64')}`).expect(200);
+            await supertest(app).delete("/v11/user/self").set('Authorization', `Basic ${Buffer.from('test@gmail.com:newtest123').toString('base64')}`).expect(200);
 
             
         })
